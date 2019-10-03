@@ -6,7 +6,7 @@ authors = ["prasanta <prasantakakati1994@gmail.com>"]
 license = ""
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6"
 django = "^2.2"
 django-rest-framework = "^0.1.0"
 uwsgi = "^2.0"
