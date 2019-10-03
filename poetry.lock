@@ -440,6 +440,14 @@ version = "2019.2"
 
 [[package]]
 category = "main"
+description = "Raven is a client for Sentry (https://getsentry.com)"
+name = "raven"
+optional = false
+python-versions = "*"
+version = "6.10.0"
+
+[[package]]
+category = "main"
 description = "Python HTTP for Humans."
 name = "requests"
 optional = false
@@ -589,7 +597,7 @@ version = "0.6.0"
 more-itertools = "*"
 
 [metadata]
-content-hash = "c2113926137f88149c6c9b0ef18c3c1e63cca689464b6d236ebca7f28aaddba4"
+content-hash = "2dc415e3f824a6c6f646738be51cdfb5d63782fe0b585db918bbbf06ef4fa022"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -636,6 +644,7 @@ pysocks = ["08e69f092cc6dbe92a0fdd16eeb9b9ffbc13cadfe5ca4c7bd92ffb078b293299", "
 python-jsonrpc-server = ["59ce9c9523c14c493a327b3a27ee37464a36dc2b9d8ab485ecbcedd38840380a"]
 python-language-server = ["bf172c9c21fc5c2baa293155ddcb27712905f1ea1ebc0ba90985f7fd13039550"]
 pytz = ["26c0b32e437e54a18161324a2fca3c4b9846b74a8dccddd843113109e1116b32", "c894d57500a4cd2d5c71114aaab77dbab5eabd9022308ce5ac9bb93a60a6f0c7"]
+raven = ["3fa6de6efa2493a7c827472e984ce9b020797d0da16f1db67197bcc23c8fae54", "44a13f87670836e153951af9a3c80405d36b43097db869a36e92809673692ce4"]
 requests = ["11e007a8a2aa0323f5a921e9e6a2d7e4e67d9877e85773fba9ba6419025cbeb4", "9cf5292fcd0f598c671cfc1e0d7d1a7f13bb8085e9a590f48c010551dc6c4b31"]
 requests-oauthlib = ["bd6533330e8748e94bf0b214775fed487d309b8b8fe823dc45641ebcd9a32f57", "d3ed0c8f2e3bbc6b344fa63d6f933745ab394469da38db16bdddb461c7e25140", "dd5a0499abfefd087c6dd96693cbd5bfd28aa009719a7f85ab3fabe3956ef19a"]
 rope = ["6b728fdc3e98a83446c27a91fc5d56808a004f8beab7a31ab1d7224cecc7d969", "c5c5a6a87f7b1a2095fb311135e2a3d1f194f5ecb96900fdd0a9100881f48aaf", "f0dcf719b63200d492b85535ebe5ea9b29e0d0b8aebeb87fe03fc1a65924fdaf"]

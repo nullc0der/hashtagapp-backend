@@ -16,6 +16,7 @@ requests_oauthlib = "^1.2"
 tweepy = "^3.8"
 pillow = "^6.2"
 django-cors-headers = "^3.1"
+raven = "^6.10"
 
 [tool.poetry.dev-dependencies]
 pep8 = "^1.7"
