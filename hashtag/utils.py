@@ -54,7 +54,7 @@ def get_twitter_profile_photo(twitter_token_uid):
             twitter_token.oauth_token_secret
         )
         api = tweepy.API(auth)
-        me = api.me()
+        me = api.verify_credentials()
         profile_image = me.profile_image_url_https
         return get_full_size_twitter_image_url(profile_image)
     except TwitterToken.DoesNotExist:

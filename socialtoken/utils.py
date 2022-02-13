@@ -7,8 +7,8 @@ from django.conf import settings
 def get_twitter_request_token():
     callback_uris = {
         'local': 'http://localhost:3000/twicallback/',
-        'production': 'https://hashtag.basicincomeaction.org/twicallback/',
-        'beta': 'https://hashtag.basicincomeaction.org/twicallback/'
+        'production': 'https://hashtag.baza.foundation/twicallback/',
+        'beta': 'https://hashtag.baza.foundation/twicallback/'
     }
     auth = OAuth1(
         callback_uri=callback_uris[settings.SITE_TYPE],

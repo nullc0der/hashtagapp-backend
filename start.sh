@@ -9,3 +9,5 @@ echo "Migrating DB"
 python manage.py migrate --noinput
 echo "Starting WSGI server"
 uwsgi uwsgi.ini
+
+TODO: Add new sentry and matomo
