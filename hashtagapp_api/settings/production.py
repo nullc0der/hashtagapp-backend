@@ -6,10 +6,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = [get_env_var('HOST')]
 
-INSTALLED_APPS += [
-    'raven.contrib.django.raven_compat',
-]
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
