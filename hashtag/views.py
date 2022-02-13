@@ -1,7 +1,9 @@
 import os
 import tempfile
 from itertools import zip_longest
+import base64
 
+import requests
 import tweepy
 
 from django.conf import settings
@@ -11,6 +13,7 @@ from rest_framework import views, status
 from rest_framework.response import Response
 from rest_framework.parsers import (
     FormParser, MultiPartParser, JSONParser)
+from rest_framework.decorators import api_view
 
 from socialtoken.models import TwitterToken
 from hashtag.utils import (
@@ -111,3 +114,13 @@ def facebook_share_view(request, uid):
             )
         }
     )
+
+
+@api_view(['GET'])
+def get_non_existent_photo(request):
+    response = requests.get(
+        'https://www.thispersondoesnotexist.com/image?something')
+    return Response({
+        'image': f'data:{response.headers["Content-Type"]};base64,'
+        f'{base64.b64encode(response.content).decode("utf-8")}'
+    })
