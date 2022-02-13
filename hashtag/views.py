@@ -77,14 +77,18 @@ class UploadHashtagImageView(views.APIView):
             auth.set_access_token(
                 twitter_token.oauth_token, twitter_token.oauth_token_secret)
             api = tweepy.API(auth)
-            api.update_profile_image(tmp_file.name)
+            user = api.update_profile_image(tmp_file.name)
             os.remove(tmp_file.name)
             hashtag_image = HashtagImage(
                 image=get_final_file(request.data['photo']),
                 uid=get_hashtag_uid()
             )
             hashtag_image.save()
-            return Response({'success': True})
+            return Response({
+                'success': True,
+                'user': user.screen_name,
+                'hashtag_image_uid': hashtag_image.uid
+            })
         except TwitterToken.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
