@@ -17,6 +17,7 @@ tweepy = "^4.5"
 pillow = "^9.0"
 django-cors-headers = "^3.1"
 sentry-sdk = "^1.5.5"
+urllib3 = "^1.26.9"
 
 [tool.poetry.dev-dependencies]
 pep8 = "^1.7"
