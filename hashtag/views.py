@@ -1,5 +1,3 @@
-import os
-import tempfile
 from itertools import zip_longest
 import base64
 
@@ -8,18 +6,19 @@ import tweepy
 
 from django.conf import settings
 from django.shortcuts import render
+from django.core.files.base import ContentFile
+from django.utils.crypto import get_random_string
 
 from rest_framework import views, status
 from rest_framework.response import Response
-from rest_framework.parsers import (
-    FormParser, MultiPartParser, JSONParser)
 from rest_framework.decorators import api_view
 
 from socialtoken.models import TwitterToken
 from hashtag.utils import (
-    get_hashtag_uid, get_final_file,
+    get_hashtag_uid,
     get_facebook_profile_photo,
-    get_twitter_profile_photo)
+    get_twitter_profile_photo,
+    convert_svg_to_png)
 from hashtag.models import HashtagImage
 
 
@@ -46,11 +45,12 @@ class UploadHashtagImageView(views.APIView):
     This API will be used to upload hashtag image to users social account
     """
 
-    parser_classes = (FormParser, MultiPartParser, JSONParser, )
-
     def save_hashtag_image(self, request):
+        img_string = convert_svg_to_png(request.data['svg'])
+        data = ContentFile(base64.b64decode(img_string.split(
+            ',')[1]), name=f'fb-{get_random_string(length=12)}.png')
         hashtag_image = HashtagImage(
-            image=get_final_file(request.data['photo']),
+            image=data,
             uid=get_hashtag_uid()
         )
         hashtag_image.save()
@@ -65,25 +65,20 @@ class UploadHashtagImageView(views.APIView):
     def upload_photo_to_twitter(self, request):
         try:
             twitter_token = TwitterToken.objects.get(uid=request.data['uid'])
-            tmp_file = tempfile.NamedTemporaryFile(
-                prefix='twitter',
-                suffix='.png',
-                delete=False
+            img_string = convert_svg_to_png(request.data['svg'])
+            data = ContentFile(base64.b64decode(img_string.split(
+                ',')[1]), name=f'twitter-{get_random_string(length=12)}.png')
+            hashtag_image = HashtagImage(
+                image=data,
+                uid=get_hashtag_uid()
             )
-            tmp_file.writelines(request.data['photo'])
-            tmp_file.close()
+            hashtag_image.save()
             auth = tweepy.OAuthHandler(
                 settings.TWITTER_KEY, settings.TWITTER_SECRET)
             auth.set_access_token(
                 twitter_token.oauth_token, twitter_token.oauth_token_secret)
             api = tweepy.API(auth)
-            user = api.update_profile_image(tmp_file.name)
-            os.remove(tmp_file.name)
-            hashtag_image = HashtagImage(
-                image=get_final_file(request.data['photo']),
-                uid=get_hashtag_uid()
-            )
-            hashtag_image.save()
+            user = api.update_profile_image(hashtag_image.image.path)
             return Response({
                 'success': True,
                 'user': user.screen_name,
@@ -128,3 +123,13 @@ def get_non_existent_photo(request):
         'image': f'data:{response.headers["Content-Type"]};base64,'
         f'{base64.b64encode(response.content).decode("utf-8")}'
     })
+
+
+class DownloadImage(views.APIView):
+    """
+        This view converts a svg image to png
+    """
+
+    def post(self, request, format=None):
+        img_string = convert_svg_to_png(request.data['svg'])
+        return Response({'img': img_string})

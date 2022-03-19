@@ -1,4 +1,6 @@
-from mimetypes import MimeTypes
+import subprocess
+import os
+import base64
 
 import tweepy
 from django.utils.crypto import get_random_string
@@ -14,14 +16,6 @@ def get_hashtag_uid():
     while is_not_unique:
         get_hashtag_uid()
     return uid
-
-
-def get_final_file(photo):
-    photo_name_splited = photo.name.split('.')
-    if not len(photo_name_splited) > 1:
-        extension = MimeTypes().guess_extension(photo.content_type)
-        photo.name = photo_name_splited[0] + extension
-    return photo
 
 
 def get_full_size_twitter_image_url(url):
@@ -59,3 +53,22 @@ def get_twitter_profile_photo(twitter_token_uid):
         return get_full_size_twitter_image_url(profile_image)
     except TwitterToken.DoesNotExist:
         return ''
+
+
+def convert_svg_to_png(svg_string: str) -> str:
+    filename = get_random_string(length=24)
+    with open(f'/tmp/{filename}.svg', 'w+') as svgfile:
+        svgfile.write(svg_string)
+    inkscape_path_result = subprocess.run(
+        ['which', 'inkscape'], capture_output=True)
+    subprocess.run([
+        inkscape_path_result.stdout.strip(),
+        '--export-filename',
+        f'/tmp/{filename}.png',
+        '-w', '600', '-h', '600',
+        f'/tmp/{filename}.svg'], capture_output=True)
+    with open(f'/tmp/{filename}.png', "rb") as pngfile:
+        img_string = f'data:image/png;base64,{base64.b64encode(pngfile.read()).decode("utf-8")}'
+    os.remove(f'/tmp/{filename}.svg')
+    os.remove(f'/tmp/{filename}.png')
+    return img_string
