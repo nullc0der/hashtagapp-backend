@@ -1,4 +1,4 @@
-FROM python:3.8-alpine
+FROM alpine:latest
 LABEL maintainer Prasanta Kakati <prasantakakati1994@gmail.com>
 RUN apk update && \
     apk add build-base linux-headers postgresql-client postgresql-dev \
