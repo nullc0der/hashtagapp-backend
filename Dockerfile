@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM python:3.8-alpine
 LABEL maintainer Prasanta Kakati <prasantakakati1994@gmail.com>
 RUN apk update && \
     apk add build-base linux-headers postgresql-client postgresql-dev \
@@ -8,7 +8,7 @@ RUN apk update && \
     font-noto-thai font-noto-tibetan font-sony-misc font-daewoo-misc font-jis-misc \
     font-arabic-misc font-noto-arabic font-noto-armenian font-noto-cherokee \
     font-noto-devanagari font-noto-ethiopic font-noto-georgian font-noto-hebrew font-noto-lao font-noto-malayalam \
-    font-noto-tamil font-noto-thaana font-noto-bengali
+    font-noto-tamil font-noto-thaana font-noto-bengali ttf-liberation
 RUN wget https://fonts.google.com/download?family=Noto%20Sans%20JP -O 'noto-sans-jp.zip' && \
     mkdir /root/.fonts && \
     unzip 'noto-sans-jp.zip' -d /root/.fonts && \
