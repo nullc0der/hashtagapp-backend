@@ -1,7 +1,6 @@
 import subprocess
 import os
 import base64
-from urllib.parse import unquote
 
 import tweepy
 from django.utils.crypto import get_random_string
@@ -59,7 +58,7 @@ def get_twitter_profile_photo(twitter_token_uid):
 def convert_svg_to_png(svg_string: str) -> str:
     filename = get_random_string(length=24)
     with open(f'/tmp/{filename}.svg', 'w+') as svgfile:
-        svgfile.write(unquote(svg_string))
+        svgfile.write(base64.b64decode(svg_string).decode('utf-8'))
     inkscape_path_result = subprocess.run(
         ['which', 'inkscape'], capture_output=True)
     subprocess.run([
