@@ -66,8 +66,9 @@ class UploadHashtagImageView(views.APIView):
         try:
             twitter_token = TwitterToken.objects.get(uid=request.data['uid'])
             img_string = convert_svg_to_png(request.data['svg'])
-            data = ContentFile(base64.b64decode(img_string.split(
-                ',')[1]), name=f'twitter-{get_random_string(length=12)}.png')
+            data = ContentFile(
+                base64.b64decode(img_string),
+                name=f'twitter-{get_random_string(length=12)}.png')
             hashtag_image = HashtagImage(
                 image=data,
                 uid=get_hashtag_uid()
@@ -132,4 +133,4 @@ class DownloadImage(views.APIView):
 
     def post(self, request, format=None):
         img_string = convert_svg_to_png(request.data['svg'])
-        return Response({'img': img_string})
+        return Response({'img': f'data:image/png;base64,{img_string}'})

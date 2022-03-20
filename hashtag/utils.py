@@ -68,7 +68,7 @@ def convert_svg_to_png(svg_string: str) -> str:
         '-w', '600', '-h', '600',
         f'/tmp/{filename}.svg'], capture_output=True)
     with open(f'/tmp/{filename}.png', "rb") as pngfile:
-        img_string = f'data:image/png;base64,{base64.b64encode(pngfile.read()).decode("utf-8")}'
+        img_string = base64.b64encode(pngfile.read()).decode("utf-8")
     os.remove(f'/tmp/{filename}.svg')
     os.remove(f'/tmp/{filename}.png')
     return img_string
