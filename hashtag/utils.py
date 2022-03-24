@@ -8,6 +8,7 @@ from django.conf import settings
 
 from socialtoken.models import TwitterToken
 from hashtag.models import HashtagImage
+from hashtag.lzstring import LZString
 
 
 def get_hashtag_uid():
@@ -58,7 +59,7 @@ def get_twitter_profile_photo(twitter_token_uid):
 def convert_svg_to_png(svg_string: str) -> str:
     filename = get_random_string(length=24)
     with open(f'/tmp/{filename}.svg', 'w+') as svgfile:
-        svgfile.write(base64.b64decode(svg_string).decode('utf-8'))
+        svgfile.write(LZString.decompressFromBase64(svg_string))
     inkscape_path_result = subprocess.run(
         ['which', 'inkscape'], capture_output=True)
     subprocess.run([
