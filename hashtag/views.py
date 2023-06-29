@@ -119,7 +119,7 @@ def facebook_share_view(request, uid):
 @api_view(['GET'])
 def get_non_existent_photo(request):
     response = requests.get(
-        'https://www.thispersondoesnotexist.com/image?something')
+        'https://thispersondoesnotexist.com/')
     return Response({
         'image': f'data:{response.headers["Content-Type"]};base64,'
         f'{base64.b64encode(response.content).decode("utf-8")}'
